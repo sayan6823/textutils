@@ -22,28 +22,43 @@ export default function TextForm(props) {
     }
 
     // Text To Speech Functionality
-    function getVoices() {
-        let voices = speechSynthesis.getVoices();
-        if(!voices.length){
-          let utterance = new SpeechSynthesisUtterance("");
-          speechSynthesis.speak(utterance);
-          voices = speechSynthesis.getVoices();
+    // function getVoices() {
+    //     let voices = speechSynthesis.getVoices();
+    //     if(!voices.length){
+    //       let utterance = new SpeechSynthesisUtterance("");
+    //       speechSynthesis.speak(utterance);
+    //       voices = speechSynthesis.getVoices();
+    //     }
+    //     return voices;
+    //   }
+
+    // const handleTextToSpeech =()=>{
+
+    //     let speakData = new SpeechSynthesisUtterance();
+    //     speakData.volume = 1; // From 0 to 1
+    //     speakData.rate = 1; // From 0.1 to 10
+    //     speakData.pitch = 2; // From 0 to 2
+    //     speakData.text = text;
+    //     speakData.lang = 'en';
+    //     speakData.voice = getVoices()[0];
+
+    //     speechSynthesis.speak(speakData);
+    // }    
+
+
+    const handleTextToSpeech = () => {
+        let msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        let speakText=document.getElementById('toggleSpeak');
+        if(speakText.textContent==='Speak'){
+            window.speechSynthesis.speak(msg);
+            speakText.innerHTML='Stop';
         }
-        return voices;
+        else{
+            window.speechSynthesis.cancel();
+            speakText.innerHTML='Speak';
+        }
       }
-
-    const handleTextToSpeech =()=>{
-
-        let speakData = new SpeechSynthesisUtterance();
-        speakData.volume = 1; // From 0 to 1
-        speakData.rate = 1; // From 0.1 to 10
-        speakData.pitch = 2; // From 0 to 2
-        speakData.text = text;
-        speakData.lang = 'en';
-        speakData.voice = getVoices()[0];
-
-        speechSynthesis.speak(speakData);
-    }
 
 
 
@@ -60,8 +75,7 @@ export default function TextForm(props) {
         <button className="btn btn-primary mx-2" onClick={handleReset}>Clear</button>
         <button className="btn btn-primary mx-2" onClick={handleUpClick}>To 'UPPERCASE'</button>
         <button className="btn btn-primary mx-2" onClick={handleLowClick}>To 'lowercase'</button>
-        <button className="btn btn-primary mx-2" onClick={handleTextToSpeech}>Text To Speech</button>
-        {/* <button className="btn btn-primary mx-2" onClick={handleFindAndReplace}>Find and Replace</button> */}
+        <button className="btn btn-primary mx-2 speak" id="toggleSpeak" onClick={handleTextToSpeech}>Speak</button>
         </div>
 
         <div className="container my-3">
