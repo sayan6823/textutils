@@ -19,9 +19,21 @@ export default function TextForm(props) {
     const handleOnChange = (event)=> {
         // console.log("Onchange was clicked");
         setText(event.target.value);
+
+        // event.value has not been used here as event.target.value is a efficient method and also event.value sometimes return undefined value which can cause problems for us so we use event.target.value
+
+
+        // vowels and consonents
+        const text = event.target.value.toLowerCase();
+        const vowelRegex = /[aeiou]/g;
+        const consonantRegex = /[bcdfghjklmnpqrstvwxyz]/g;
+        const vowels = (text.match(vowelRegex) || []).length;
+        const consonants = (text.match(consonantRegex) || []).length;
+
+        setCount({ vowels, consonants });
     }
 
-    // Text To Speech Functionality
+    // Text To Speech Functionality copied from website
     // function getVoices() {
     //     let voices = speechSynthesis.getVoices();
     //     if(!voices.length){
@@ -48,6 +60,7 @@ export default function TextForm(props) {
 
     const handleTextToSpeech = () => {
         let msg = new SpeechSynthesisUtterance();
+        msg.rate = 1;
         msg.text = text;
         let speakText=document.getElementById('toggleSpeak');
         if(speakText.textContent==='Speak'){
@@ -61,16 +74,16 @@ export default function TextForm(props) {
       }
 
 
-
     //
     const [text,setText]= useState('');
-    
+    const [count, setCount] = useState({ vowels: 0, consonants: 0 });
   return (
     <>
         <div className="container">
             <h1>{props.heading}</h1>
         <div className="mb-3">
             <textarea className="form-control inputText" value={text} id="myBox" rows="8" onChange={handleOnChange}></textarea>
+            
         </div>
         <button className="btn btn-primary mx-2" onClick={handleReset}>Clear</button>
         <button className="btn btn-primary mx-2" onClick={handleUpClick}>To 'UPPERCASE'</button>
@@ -84,9 +97,26 @@ export default function TextForm(props) {
             <p>{0.48 * (text===""?0:(text.trim().split(' ').length))} seconds in average to read the whole text</p>
             <h2>Preview of entered text: </h2>
             <p>{text}</p>
-        </div>
-      
+            <h2>Vowels and Consonents</h2>
+            <p>{count.vowels} vowels and {count.consonants} are consonents</p>
+        </div>      
 
     </>
   )
 }
+
+
+
+// What is state and hook?
+
+// 1. State=condition of any component for eg. textarea component might be empty sometime , sometimes it has letters .State generally refers to application data or properties that need to be tracked.
+// 2. Hooks= A method which helps us to use features of classes in function based component this is because developer like us prefer to use function over classes.
+
+// Shorthand:Hooks allow function components to have access to state and other React features. Because of this, class components are generally no longer needed.
+
+
+// 3. Hooks has this part ---->   
+// const [count,setCount]=useState("Hello Universe"); 
+
+// Here in above hook the value of count is Hello Universe . count is array variable so that we just can't update or change its value like normal variable. 
+// But we can update or change its value using setCount() method. i.e. setCount("Hey You"); this implies the value of count is updated to Hey You.
