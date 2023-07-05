@@ -77,18 +77,52 @@ export default function TextForm(props) {
     //
     const [text,setText]= useState('');
     const [count, setCount] = useState({ vowels: 0, consonants: 0 });
+    const [myStyle,setMyStyle]=useState({
+        color:"black",
+        background: "transparent",
+        backgroundColor:"white",
+        padding:"30px",
+        borderRadius:"20px"
+    })
+    const [mode,setMode]=useState('Dark Mode');
+    const handleMode= ()=>{
+        if(mode==='Dark Mode'){
+            setMyStyle({
+                color:"white",
+                background: "transparent",
+                backgroundColor:"black",
+                padding:"30px",
+                borderRadius:"20px"
+            })
+            setMode('Light Mode')
+        }
+        else{
+            setMyStyle({
+                color:"black",
+                background: "transparent",
+                backgroundColor:"white",
+                padding:"30px",
+                borderRadius:"20px"
+            })
+            setMode('Dark Mode')
+        }
+    }
   return (
     <>
-        <div className="container">
+        <div className="container" style={myStyle}>
             <h1>{props.heading}</h1>
         <div className="mb-3">
-            <textarea className="form-control inputText" value={text} id="myBox" rows="8" onChange={handleOnChange}></textarea>
+            <textarea className="form-control inputText" value={text} id="myBox" rows="8" onChange={handleOnChange} style={myStyle}></textarea>
             
         </div>
         <button className="btn btn-primary mx-2" onClick={handleReset}>Clear</button>
         <button className="btn btn-primary mx-2" onClick={handleUpClick}>To 'UPPERCASE'</button>
         <button className="btn btn-primary mx-2" onClick={handleLowClick}>To 'lowercase'</button>
         <button className="btn btn-primary mx-2 speak" id="toggleSpeak" onClick={handleTextToSpeech}>Speak</button>
+        <div class="form-check form-switch my-3 mx-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={handleMode}/>
+            <label class="form-check-label" for="flexSwitchCheckDefault">{mode}</label>
+        </div>
         </div>
 
         <div className="container my-3">
