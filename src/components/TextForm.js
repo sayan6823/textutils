@@ -84,9 +84,9 @@ export default function TextForm(props) {
         padding:"30px",
         borderRadius:"20px"
     })
-    const [mode,setMode]=useState('Dark Mode');
+    const [mode,setMode]=useState('Light Mode');
     const handleMode= ()=>{
-        if(mode==='Dark Mode'){
+        if(mode==='Light Mode'){
             setMyStyle({
                 color:"white",
                 background: "transparent",
@@ -94,7 +94,7 @@ export default function TextForm(props) {
                 padding:"30px",
                 borderRadius:"20px"
             })
-            setMode('Light Mode')
+            setMode('#042743 Mode')
         }
         else{
             setMyStyle({
@@ -104,33 +104,42 @@ export default function TextForm(props) {
                 padding:"30px",
                 borderRadius:"20px"
             })
-            setMode('Dark Mode')
+            setMode('Light Mode')
         }
+    }
+
+
+    const handleCopy =()=>{
+        let copyText= document.getElementById('myBox');
+        // copyText.select();
+        navigator.clipboard.writeText(copyText.value);
+        props.showAlert("Text copied to clipboard","success");
     }
   return (
     <>
-        <div className="container" style={myStyle}>
+        <div className="container" style={{backgroundColor:props.mode==='light'?'white':'#042743',color:props.mode==='light'?'black':'white'}}>
             <h1>{props.heading}</h1>
         <div className="mb-3">
-            <textarea className="form-control inputText" value={text} id="myBox" rows="8" onChange={handleOnChange} style={myStyle}></textarea>
+            <textarea className="form-control inputText" value={text} id="myBox" rows="8" onChange={handleOnChange} style={{backgroundColor:props.mode==='light'?'white':'#042743',color:props.mode==='light'?'black':'white'}}></textarea>
             
         </div>
         <button className="btn btn-primary mx-2" onClick={handleReset}>Clear</button>
         <button className="btn btn-primary mx-2" onClick={handleUpClick}>To 'UPPERCASE'</button>
         <button className="btn btn-primary mx-2" onClick={handleLowClick}>To 'lowercase'</button>
         <button className="btn btn-primary mx-2 speak" id="toggleSpeak" onClick={handleTextToSpeech}>Speak</button>
-        <div class="form-check form-switch my-3 mx-2">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={handleMode}/>
-            <label class="form-check-label" for="flexSwitchCheckDefault">{mode}</label>
-        </div>
+        <button className="btn btn-primary mx-2 speak" id="toggleSpeak" onClick={handleCopy}>Copy to Clipboard</button>
+        {/* <div className="form-check form-switch my-3 mx-2">
+            <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={handleMode}/>
+            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">{mode}</label>
+        </div> */}
         </div>
 
-        <div className="container my-3">
+        <div className="container my-3" style={{backgroundColor:props.mode==='light'?'white':'#042743',color:props.mode==='light'?'black':'white'}}>
             <h1>Your Text Summary</h1>
             <p>{text===""?0:(text.trim().split(' ').length)} words and {text.replace(/ /g ,"").length} characters</p>
             <p>{0.48 * (text===""?0:(text.trim().split(' ').length))} seconds in average to read the whole text</p>
             <h2>Preview of entered text: </h2>
-            <p>{text}</p>
+            <p>{text.length>0?text:"Enter something in the textbox above to preview it here"}</p>
             <h2>Vowels and Consonents</h2>
             <p>{count.vowels} vowels and {count.consonants} are consonents</p>
         </div>      
